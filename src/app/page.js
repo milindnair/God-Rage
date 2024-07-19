@@ -12,6 +12,8 @@ import {
   DropdownItem,
   Button
 } from "@nextui-org/react";
+import { TypeBox } from "@/components/extras/TypeBox";
+// import { TypeBox } from "@/components/extras/typeBox";
 
 export default function Home() {
   const words = `Oxygen gets you high. In a catastrophic emergency, we're taking giant, panicked breaths. Suddenly you become euphoric, docile. You accept your fate. It's all right here. Emergency water landing, six hundred miles an hour. Blank faces, calm as Hindu cows
@@ -80,6 +82,7 @@ export default function Home() {
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
+    <TypeBox />
 
 
     </main>
