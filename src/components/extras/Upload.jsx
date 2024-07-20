@@ -1,34 +1,58 @@
-"use client";
+'use client';
 
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
-import { ButtonsCard } from "../ui/tailwindcss-buttons";
+import { Spinner } from "@nextui-org/react";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const Upload = () => {
+const Upload = ({ setDocuments }) => {
     const [selectedFile, setSelectedFile] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [fileUrl, setFileUrl] = useState(null);
     const fileInputRef = useRef(null);
 
-    const handleFileChange = (event) => {
-        setSelectedFile(event.target.files[0]);
+    const handleFileChange = async (event) => {
+        const file = event.target.files[0];
+        setSelectedFile(file);
+
+        // Immediately upload the file after selection
+        setLoading(true);
+        await handleFileUpload(file);
     };
 
     const handleButtonClick = () => {
-        fileInputRef.current.click();
+        if (fileInputRef.current) {
+            fileInputRef.current.click(); // Trigger file selection dialog
+        } else {
+            console.error('File input reference is not set');
+        }
     };
 
-    const handleFileUpload = async () => {
+    const handleFileUpload = async (file) => {
+        if (!file) return; // Early return if no file is selected
+
         const formData = new FormData();
-        formData.append('file', selectedFile);
+        formData.append('file', file);
 
         try {
-            const response = await axios.post('http://localhost:3001/upload', formData, {
+            const response = await axios.post('http://localhost:5001/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            console.log('File uploaded successfully:', response.data);
+            if (response.data.status === 200) {
+                setFileUrl(response.data.fileUrl); // Assuming the response contains a fileUrl
+                toast.success('File uploaded successfully!');
+                setDocuments(prevDocs => [...prevDocs, response.data.document]); // Add the new document to the existing list
+
+            } else {
+                toast.error('File upload failed.');
+            }
         } catch (error) {
-            console.error('Error uploading file:', error);
+            toast.error('Error uploading file.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -38,10 +62,24 @@ const Upload = () => {
                 type="file"
                 onChange={handleFileChange}
                 ref={fileInputRef}
-                style={{ display: 'none' }}
+                style={{ display: 'none' }} // Keep the file input hidden
             />
             <TailwindcssButtons onClick={handleButtonClick} />
-            {/* <button onClick={handleFileUpload}>Upload</button> */}
+            {loading && (
+                <div className="flex flex-col items-center mt-4">
+                    <Spinner label="Uploading..." color="warning" />
+                    <p className="mt-2 text-white">Uploading...</p>
+                </div>
+            )}
+            {fileUrl && (
+                <div className="mt-4">
+                    {/* Removed the iframe for direct redirection */}
+                    <a href={fileUrl} target="_blank" rel="noopener noreferrer">
+                        <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-200 ease-in-out">Preview</button>
+                    </a>
+                </div>
+            )}
+            <ToastContainer />
         </div>
     );
 };
