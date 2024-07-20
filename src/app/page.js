@@ -1,6 +1,6 @@
 'use client'
 
-import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
+//import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +10,10 @@ import {
   DropdownMenu,
   DropdownSection,
   DropdownItem,
-  Button
+  Button,
+  Card, 
+  CardBody,
+  Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure
 } from "@nextui-org/react";
 import { TypeBox } from "@/components/extras/TypeBox";
 import Upload, { TailwindcssButtons } from "@/components/extras/Upload";
@@ -22,8 +25,9 @@ export default function Home() {
   const [modelType,setModelType] = useState('Choose a model');
 
 
-  const words = `Oxygen gets you high. In a catastrophic emergency, we're taking giant, panicked breaths. Suddenly you become euphoric, docile. You accept your fate. It's all right here. Emergency water landing, six hundred miles an hour. Blank faces, calm as Hindu cows
-`;
+  const words = `Oxygen gets you high. In a catastrophic emergency, we're taking giant, panicked breaths. Suddenly you become euphoric, docile. You accept your fate. It's all right here. Emergency water landing, six hundred miles an hour. Blank faces, calm as Hindu cows`;
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  
   return (
     <main className="flex flex-col p-4 md:flex-row min-h-screen gap-3">
       {/* <TextGenerateEffect  words={words} /> */}
@@ -73,8 +77,65 @@ export default function Home() {
       {/* Right box */}
       <div className="flex flex-col w-full md:w-1/5 p-4 bg-[#0c1b32] overflow-y-auto rounded-2xl">
         <h2 className="text-xl font-bold mb-4">Right Column</h2>
-        <p>Content for the right column</p>
+        <Card className="mb-0.5">
+          <Button onPress={onOpen} variant="bordered" >
+            <CardBody>
+              <p>Document no 1</p>
+            </CardBody>
+          </Button>
+        </Card>
+        <Card className="mb-0.5">
+          <Button onPress={onOpen} variant="bordered" className="">
+            <CardBody>
+              <p>Document no 2</p>
+            </CardBody>
+          </Button>
+        </Card>
+        <Card className="mb-0.5">
+          <Button onPress={onOpen} variant="bordered" className="">
+            <CardBody>
+              <p>Document no 3</p>
+            </CardBody>
+          </Button>
+        </Card>
       </div>
+
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1 text-black">Summary of Chat</ModalHeader>
+              <ModalBody className="text-black">
+                <p> 
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam pulvinar risus non risus hendrerit venenatis.
+                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                </p>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam pulvinar risus non risus hendrerit venenatis.
+                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                </p>
+                <p>
+                  Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
+                  dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis. 
+                  Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod. 
+                  Et mollit incididunt nisi consectetur esse laborum eiusmod pariatur 
+                  proident Lorem eiusmod et. Culpa deserunt nostrud ad veniam.
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" onPress={onClose}>
+                  Action
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </main>
   );
 }
