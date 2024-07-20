@@ -76,28 +76,18 @@ export default function Home() {
 
       {/* Right box */}
       <div className="flex flex-col w-full md:w-1/5 p-4 bg-[#0c1b32] overflow-y-auto rounded-2xl">
-        <h2 className="text-xl font-bold mb-4">Right Column</h2>
-        <Card className="mb-0.5">
-          <Button onPress={onOpen} variant="bordered" >
-            <CardBody>
-              <p>Document no 1</p>
-            </CardBody>
-          </Button>
-        </Card>
-        <Card className="mb-0.5">
-          <Button onPress={onOpen} variant="bordered" className="">
-            <CardBody>
-              <p>Document no 2</p>
-            </CardBody>
-          </Button>
-        </Card>
-        <Card className="mb-0.5">
-          <Button onPress={onOpen} variant="bordered" className="">
-            <CardBody>
-              <p>Document no 3</p>
-            </CardBody>
-          </Button>
-        </Card>
+        <h2 className="text-xl font-bold mb-8">Right Column</h2>
+        <Button onPress={onOpen} variant="bordered" className="bg-gray-800 text-white border-gray-600 mb-1">
+          Document no 1
+        </Button>
+
+        <Button onPress={onOpen} variant="bordered" className="bg-gray-800 text-white border-gray-600 mb-1">
+          Document no 2
+        </Button>
+
+        <Button onPress={onOpen} variant="bordered" className="bg-gray-800 text-white border-gray-600">
+          Document no 3
+        </Button>
       </div>
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
