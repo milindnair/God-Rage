@@ -2,6 +2,8 @@
 
 //import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { AuroraBackground } from "@/components/ui/aurora-background";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -20,6 +22,7 @@ import Upload, { TailwindcssButtons } from "@/components/extras/Upload";
 import { useState } from "react";
 import { ExpandableCardDemo } from "@/components/extras/DocumentCards";
 import ChatHistory from "@/components/extras/ChatHistory";
+import {Divider} from "@nextui-org/react";
 // import { TypeBox } from "@/components/extras/typeBox";
 
 
@@ -34,7 +37,7 @@ export default function Home() {
     description: "Analysis on pwc",
     title: "pwc-ai-analysis",
     src: "https://assets.aceternity.com/demos/lana-del-rey.jpeg",
-    ctaText: "Summ",
+    ctaText: "View",
     ctaLink: "https://ui.aceternity.com/templates",
     content: () => {
       return (
@@ -57,7 +60,7 @@ export default function Home() {
     description: "Babbu Maan",
     title: "Mitran Di Chhatri",
     src: "https://assets.aceternity.com/demos/babbu-maan.jpeg",
-    ctaText: "Play",
+    ctaText: "View",
     ctaLink: "https://ui.aceternity.com/templates",
     content: () => {
       return (
@@ -80,7 +83,7 @@ export default function Home() {
     description: "Metallica",
     title: "For Whom The Bell Tolls",
     src: "https://assets.aceternity.com/demos/metallica.jpeg",
-    ctaText: "Play",
+    ctaText: "View",
     ctaLink: "https://ui.aceternity.com/templates",
     content: () => {
       return (
@@ -102,7 +105,7 @@ export default function Home() {
     description: "Led Zeppelin",
     title: "Stairway To Heaven",
     src: "https://assets.aceternity.com/demos/led-zeppelin.jpeg",
-    ctaText: "Play",
+    ctaText: "View",
     ctaLink: "https://ui.aceternity.com/templates",
     content: () => {
       return (
@@ -119,38 +122,17 @@ export default function Home() {
       );
     },
   },
-  {
-    description: "Mustafa Zahid",
-    title: "Toh Phir Aao",
-    src: "https://assets.aceternity.com/demos/toh-phir-aao.jpeg",
-    ctaText: "Play",
-    ctaLink: "https://ui.aceternity.com/templates",
-    content: () => {
-      return (
-        <p>
-          &quot;Aawarapan&quot;, a Bollywood movie starring Emraan Hashmi, is
-          renowned for its intense storyline and powerful performances. Directed
-          by Mohit Suri, the film has become a significant work in the Indian
-          film industry. <br /> <br /> The movie explores themes of love,
-          redemption, and sacrifice, capturing the essence of human emotions and
-          relationships. With a gripping narrative and memorable music,
-          &quot;Aawarapan&quot; has garnered a massive fan following both in
-          India and abroad, solidifying Emraan Hashmi&apos;s status as a
-          versatile actor.
-        </p>
-      );
-    },
-  },
 ]);
+const [selectedDocuments, setSelectedDocuments] = useState([]);
 
 
   const words = `Oxygen gets you high. In a catastrophic emergency, we're taking giant, panicked breaths. Suddenly you become euphoric, docile. You accept your fate. It's all right here. Emergency water landing, six hundred miles an hour. Blank faces, calm as Hindu cows`;
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   
   return (
-    <main className="flex flex-col p-4 md:flex-row min-h-screen gap-3">
+    <main className="flex flex-col p-4 md:flex-row h-screen gap-3">
       {/* <TextGenerateEffect  words={words} /> */}
-
+      
       <div className="flex flex-col gap-2 w-full md:w-1/5 p-4 bg-[#0c1b32] overflow-y-auto rounded-2xl ">
         <h1 className="text-xl font-bold mb-4">Simplify.io</h1>
         <div className="flex flex-col justify-between h-full">
@@ -178,7 +160,7 @@ export default function Home() {
               <DropdownItem key="gemini">gemini</DropdownItem>
             </DropdownMenu>
           </Dropdown>
-          {/* <ChatHistory /> */}
+          
         </div>
       </div>
 
@@ -187,6 +169,22 @@ export default function Home() {
         <div className="absolute inset-0 flex flex-col justify-end">
           <div className="flex justify-center items-center mb-5">
             <div className="w-3/5 align-bottom">
+              <div className="mt-8">
+                <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
+                  Selected Documents:
+                </h2>
+                <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
+                  {selectedDocuments.length > 0 ? (
+                    selectedDocuments.map((doc, index) => (
+                      <li key={index} className="mb-2">
+                        {doc.title}
+                      </li>
+                    ))
+                  ) : (
+                    <li>No documents selected</li>
+                  )}
+                </ul>
+              </div>
               <TypeBox />
             </div>
           </div>
@@ -196,8 +194,15 @@ export default function Home() {
 
       {/* Right box */}
       <div className="flex flex-col w-full md:w-1/5 p-4 bg-[#0c1b32] overflow-y-auto rounded-2xl">
-        <ExpandableCardDemo documents={documents} />
+        <h2 className="text-xl text-purple-500 mt-5">Uploaded Documents</h2>
+        <Divider className="mb-3 mt-2 bg-gray-600" />
+        <ExpandableCardDemo 
+          documents={documents}
+          selectedDocuments={selectedDocuments}
+          setSelectedDocuments={setSelectedDocuments}
+        />
       </div>
+
     </main>
   );
 }
