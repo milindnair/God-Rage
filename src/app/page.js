@@ -14,75 +14,54 @@ import {
 } from "@nextui-org/react";
 import { TypeBox } from "@/components/extras/TypeBox";
 // import { TypeBox } from "@/components/extras/typeBox";
+import { AuroraBackground } from "@/components/ui/aurora-background";
 
 export default function Home() {
   const words = `Oxygen gets you high. In a catastrophic emergency, we're taking giant, panicked breaths. Suddenly you become euphoric, docile. You accept your fate. It's all right here. Emergency water landing, six hundred miles an hour. Blank faces, calm as Hindu cows
 `;
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-    <CardContainer className="inter-var">
-      <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border  ">
-        <CardItem
-          translateZ="50"
-          className="text-xl font-bold text-neutral-600 dark:text-white"
-        >
-          Make things float in air
-        </CardItem>
-        <CardItem
-          as="p"
-          translateZ="60"
-          className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
-        >
-          Hover over this card to unleash the power of CSS perspective
-        </CardItem>
-        <CardItem translateZ="100" className="w-full mt-4">
-          <Image
-            src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            height="1000"
-            width="1000"
-            className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
-            alt="thumbnail"
-          />
-        </CardItem>
-        <div className="flex justify-between items-center mt-20">
-          <CardItem
-            translateZ={20}
-            as={Link}
-            href="https://twitter.com/mannupaaji"
-            target="__blank"
-            className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
+    <main className="flex min-h-screen">
+      {/* <TextGenerateEffect  words={words} /> */}
+      {/* <Dropdown>
+        <DropdownTrigger>
+          <Button 
+            variant="bordered" 
           >
-            Try now →
-          </CardItem>
-          <CardItem
-            translateZ={20}
-            as="button"
-            className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
-          >
-            Sign up
-          </CardItem>
+            Open Menu
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu aria-label="Static Actions">
+          <DropdownItem key="new">New file</DropdownItem>
+          <DropdownItem key="copy">Copy link</DropdownItem>
+          <DropdownItem key="edit">Edit file</DropdownItem>
+          <DropdownItem key="delete" className="text-danger" color="danger">
+            Delete file
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown> */}
+      
+      <div class="flex min-h-screen w-screen p-6 bg-[#0F1035]">
+        <div class="w-1/5 p-4 bg-gray-300 overflow-y-auto rounded-l-2xl">
+          <h1 class="text-xl font-bold mb-4">Simplify.io</h1>
+          <p>Content for the left column</p>
         </div>
-      </CardBody>
-    </CardContainer>
-    <TextGenerateEffect  words={words} />;
-    <Dropdown>
-      <DropdownTrigger>
-        <Button 
-          variant="bordered" 
-        >
-          Open Menu
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu aria-label="Static Actions">
-        <DropdownItem key="new">New file</DropdownItem>
-        <DropdownItem key="copy">Copy link</DropdownItem>
-        <DropdownItem key="edit">Edit file</DropdownItem>
-        <DropdownItem key="delete" className="text-danger" color="danger">
-          Delete file
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-    <TypeBox />
+
+        <div class="flex-1 p-4 bg-white border-l border-r border-gray-200 flex flex-col relative overflow-y-auto">
+          <div class="absolute inset-0 flex flex-col justify-between">
+                
+            <div class="flex justify-center items-center mb-0">
+              <div class="w-3/5">
+                <TypeBox />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-1/5 p-4 bg-gray-300 overflow-y-auto rounded-r-2xl">
+            <h2 class="text-xl font-bol d mb-4">Right Column</h2>
+            <p>Content for the right column</p>
+        </div>
+      </div>
 
 
     </main>
