@@ -1,11 +1,26 @@
 import { Button, Card, Divider, Tooltip } from '@nextui-org/react';
 import React from 'react';
 
-const ChatHistory = ({ chathistory,setHistory }) => {
+const ChatHistory = ({ chathistory, setHistory, setMessages, setSelectedDocuments, setModelType }) => {
+
+  const handleChatClick = (title) => {
+    const selectedChat = chathistory.find(chat => {
+      return chat.title === title;
+    });
+
+    if (selectedChat) {
+      setMessages(selectedChat.chats);
+      setModelType(selectedChat.model);
+      setSelectedDocuments(selectedChat.fileNames);
+
+    }
+  };
+
 
   const handleNewChat = () => {
+    setSelectedDocuments([]);
+    setModelType('Choose a model');
   }
-
 
   return (
     <div className="p-4 h-80 overflow-y-scroll no-scrollbar">
@@ -25,7 +40,12 @@ const ChatHistory = ({ chathistory,setHistory }) => {
         </Card>
       ) : (
         chathistory.map((chat, index) => (
-          <Card key={index} className="bg-gray-50 p-4 mb-3">
+         <Card
+            key={index}
+            isPressable
+            className="bg-gray-50 p-4 mb-3 transform transition-transform duration-300 hover:scale-105 hover:-translate-y-2 rou"
+            onClick={() => handleChatClick(chat.title)}
+          >
             <h4>{chat.title}</h4>
           </Card>
         ))

@@ -21,9 +21,14 @@ import Link from 'next/link';
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card';
 import ChatHistory from '@/components/extras/ChatHistory';
 import axios from 'axios';
+import { getAllDocuments, uploadDocument } from '@/firebase/functions';
+import { toast, ToastContainer } from 'react-toastify';
 
 export default function Home() {
-  const [prompt, setPrompt] = useState('');
+const [title,setTitle] = useState("");
+const [loading, SetLoading] = useState(false);
+
+const [prompt, setPrompt] = useState('');
   const [modelType, setModelType] = useState('Choose a model');
   const [documents, setDocuments] = useState([
     {
@@ -103,70 +108,86 @@ export default function Home() {
         </p>
       ),
     },
-    {
-    description: " Based on the provided context, I can give you a one-line description of what it's about. The content appears to be discussing the impact of changing demographics, specifically the growing middle class and young population, on consumer behavior and trends in the fast-moving consumer goods (FMCG) industry in 2023.",
-    title: "Indian-FMCG-Industry-Presentation[1]",
-    content: " Based on the provided context about changing demographics, I can give you a summary that covers the key points.\n\nThe report highlights how the growing middle class and young population are driving consumption in various industries. To stay ahead of this trend, companies need to adapt to new consumer behaviors and preferences.\n\nIn terms of FMCG trends and innovations in 2023, sustainability, customer experience, digitalization, data analytics, and business development are expected to play a significant role. The report also mentions intelligence, e-commerce, blockchain, and opening up new opportunities as important areas to focus on.\n\nSome specific statistics mentioned in the report include:\n\n* 16% growth in the FMCG industry\n* 65% of consumers prioritizing sustainability when making purchasing decisions\n* 10% increase in e-commerce sales\n* 3% growth in blockchain-based transactions\n\nOverall, the report emphasizes the importance of understanding changing demographics and adapting to new trends and technologies to remain competitive in the market.\n\nPlease note that some sections of the text appear to be incomplete or unclear, which may affect the accuracy of my summary.",
-    fileName: "Indian-FMCG-Industry-Presentation[1].pptx"
-}
+        {
+        description: " Based on the provided context, I can give you a one-line description of what it's about. The content appears to be discussing the impact of changing demographics, specifically the growing middle class and young population, on consumer behavior and trends in the fast-moving consumer goods (FMCG) industry in 2023.",
+        title: "Indian-FMCG-Industry-Presentation[1]",
+        content: " Based on the provided context about changing demographics, I can give you a summary that covers the key points.\n\nThe report highlights how the growing middle class and young population are driving consumption in various industries. To stay ahead of this trend, companies need to adapt to new consumer behaviors and preferences.\n\nIn terms of FMCG trends and innovations in 2023, sustainability, customer experience, digitalization, data analytics, and business development are expected to play a significant role. The report also mentions intelligence, e-commerce, blockchain, and opening up new opportunities as important areas to focus on.\n\nSome specific statistics mentioned in the report include:\n\n* 16% growth in the FMCG industry\n* 65% of consumers prioritizing sustainability when making purchasing decisions\n* 10% increase in e-commerce sales\n* 3% growth in blockchain-based transactions\n\nOverall, the report emphasizes the importance of understanding changing demographics and adapting to new trends and technologies to remain competitive in the market.\n\nPlease note that some sections of the text appear to be incomplete or unclear, which may affect the accuracy of my summary.",
+        fileName: "Indian-FMCG-Industry-Presentation[1].pptx"
+    }
   ]);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
   const [messages, setMessages] = useState([
     { sender: 'bot', text: 'Hello! How can I assist you today?' },
-    { sender: 'user', text: 'Can you tell me about your services?' },
   ]);
 
 
-  useEffect(() => {
-    console.log('Documents',selectedDocuments);
-  },[selectedDocuments])
-
-  const[loading,SetLoading] = useState(false);
-
- const handlePromptSubmit = async (text) => {
-  // Add the new messages to the chat
-  setMessages((prevMessages) => [
-    ...prevMessages,
-    { sender: 'user', text },
-    // { sender: 'bot', text: `You said: ${text}` },
-  ]);
-
-  // Extract the file names from the selected documents
-  const fileNames = selectedDocuments.map((doc) => doc.fileName);
-
-  // Create the form data
-  const formData = {
-    query: text,
-    fileName:fileNames,
+const handleSaveChat = async () => {
+    if (messages.length > 1) {
+      try {
+        await uploadDocument(title,messages,selectedDocuments,modelType);
+        toast.success('Chat saved successfully!');
+      } catch (error) {
+        console.error('Error saving chat:', error);
+        toast.error('Failed to save chat. Please try again.');
+      }
+    } else {
+      toast.info('Please have a conversation first.');
+    }
   };
 
-  // Make an API call
-  try {
-    SetLoading(true);
-    const response = await axios.post('http://localhost:5001/response', formData, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    SetLoading(false);
 
-    console.log('API Response:', response.data);
+
+
+
+  
+
+
+  // useEffect(() => {
+  //   console.log('Documents', selectedDocuments);
+  // }, [selectedDocuments])
+
+  
+  const handlePromptSubmit = async (text) => {
 
     setMessages((prevMessages) => [
       ...prevMessages,
-      { sender: 'bot', text: `API Response: ${response.data.response}` },
+      { sender: 'user', text },
+      // { sender: 'bot', text: `You said: ${text}` },
     ]);
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const fileNames = selectedDocuments.map((doc) => doc.fileName);
 
-  const [history,setHistory] = useState(
+
+    const formData = {
+      query: text,
+      fileName: fileNames,
+    };
+
+
+    try {
+      SetLoading(true);
+      const response = await axios.post('http://localhost:5001/response', formData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      SetLoading(false);
+
+      console.log('API Response:', response.data);
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: 'bot', text: `API Response: ${response.data.response}` },
+      ]);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const [history, setHistory] = useState(
     [
       {
-        title:"First history",
+        title: "First history",
         chathistory: [],
       },
       {
@@ -174,10 +195,28 @@ export default function Home() {
         chathistory: [],
       },
       {
-        title:"Third history",
-        chathistory:[]
+        title: "Third history",
+        chathistory: []
       }]
   );
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+
+        const chatsArray = await getAllDocuments();
+        setHistory(chatsArray)
+      } catch (e) {
+        console.log(e);
+      }
+
+
+    };
+
+    // Call the async function immediately
+    fetchData();
+  }, []);
 
   return (
     <main className="flex flex-col p-4 md:flex-row h-screen gap-3">
@@ -190,7 +229,7 @@ export default function Home() {
         <h1 className="text-xl font-bold mb-4">Simplify.io</h1>
         <div className="flex flex-col justify-between h-full">
           <Upload setDocuments={setDocuments} />
-          <ChatHistory chathistory={history} setHistory={setHistory}/>
+          <ChatHistory chathistory={history} setHistory={setHistory} setMessages={setMessages} setModelType={setModelType} setSelectedDocuments={setSelectedDocuments} />
           <Dropdown className="bg-gray-800">
             <DropdownTrigger>
               <Button variant="bordered" className="bg-gray-800 text-white border-gray-600">
@@ -223,8 +262,16 @@ export default function Home() {
           {modelType != 'Choose a model' && selectedDocuments.length > 0 ? (
             <div className="flex flex-col justify-center items-center mb-5 ">
               <ChatSpace messages={messages} />
-              <div className="w-[90%] align-bottom">
-                <TypeBox prompt={prompt} setPrompt={setPrompt} onSubmitPrompt={handlePromptSubmit} loading={loading} />
+              <div className="w-[90%] align-bottom flex justify-center items-center">
+                <TypeBox prompt={prompt} setPrompt={setPrompt} onSubmitPrompt={handlePromptSubmit} loading={loading} setTitle={setTitle} />
+                <Button
+                  auto
+                  color="primary"
+                  className=""
+                  onClick={handleSaveChat}
+                >
+                  Save Chat
+                </Button>
               </div>
             </div>
           ) : (
@@ -296,6 +343,7 @@ export default function Home() {
           setSelectedDocuments={setSelectedDocuments}
         /> 
       </div>
+      <ToastContainer />
     </main>
   );
 }

@@ -1,9 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { BackgroundGradient } from "../ui/background-gradient";
 import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
 
-export function TypeBox({ prompt, setPrompt, onSubmitPrompt, loading }) {
+export function TypeBox({ prompt, setPrompt, onSubmitPrompt, loading, setTitle }) {
   const placeholders = [
     "What's the first rule of Fight Club?",
     "Who is Tyler Durden?",
@@ -12,15 +13,24 @@ export function TypeBox({ prompt, setPrompt, onSubmitPrompt, loading }) {
     "How to assemble your own PC?",
   ];
 
+  const [isFirstSubmission, setIsFirstSubmission] = useState(true);
+
   const handleChange = (e) => {
     setPrompt(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Set the title on the first submission
+    if (isFirstSubmission) {
+      const titleWords = prompt.split(" ").slice(0, 5).join(" "); // Extract the first 5 words
+      setTitle(titleWords);
+      setIsFirstSubmission(false);
+    }
+
     onSubmitPrompt(prompt);
     setPrompt('');
-   
   };
 
   return (
@@ -30,7 +40,6 @@ export function TypeBox({ prompt, setPrompt, onSubmitPrompt, loading }) {
         onChange={handleChange}
         onSubmit={handleSubmit}
         disabled={loading}
-        
       />
     </div>
   );

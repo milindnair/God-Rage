@@ -14,8 +14,8 @@ export const TextGenerateEffect = ({ words, className }) => {
         opacity: 1,
       },
       {
-        duration: 2,
-        delay: stagger(0.2),
+        duration: 1, // Reduced duration to speed up the animation
+        delay: stagger(0.1), // Reduced delay to speed up the stagger
       }
     );
   }, [scope.current]);

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import ChatMessage from './ChatMessage';
 import TracingBeam from '../ui/tracing-beam';
+import { Button } from '@nextui-org/react'; // Import the Button component from NextUI
 
 const ChatSpace = ({ messages }) => {
   const chatContainerRef = useRef(null); // Ref for the chat container
@@ -11,15 +12,18 @@ const ChatSpace = ({ messages }) => {
     scrollToBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  
   return (
-    <div ref={chatContainerRef} className="flex-1 flex flex-col m-3 p-4 h-full min-h-[80vh] max-h-[80vh] overflow-y-scroll overflow-x-hidden rounded-lg w-[95%] pt-10 no-scrollbar">
-      {/* <TracingBeam className="px-6 py-4"> */}
+    <div className="relative w-full">
+      {/* Save Chat button */}
+      
+      <div ref={chatContainerRef} className="flex-1 flex flex-col m-3 p-4 h-full min-h-[80vh] max-h-[80vh] overflow-y-scroll overflow-x-hidden border border-solid-1px border-[#3a3434] rounded-lg w-[95%] pt-10 no-scrollbar">
         {messages.map((message, index) => (
           <ChatMessage key={index} message={message} />
         ))}
         {/* Dummy div to scroll to */}
         <div ref={scrollToBottomRef}></div>
-      {/* </TracingBeam> */}
+      </div>
     </div>
   );
 };
