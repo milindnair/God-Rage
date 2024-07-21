@@ -3,7 +3,7 @@
 import { BackgroundGradient } from "../ui/background-gradient";
 import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
 
-export function TypeBox() {
+export function TypeBox({ prompt, setPrompt, onSubmitPrompt, loading }) {
   const placeholders = [
     "What's the first rule of Fight Club?",
     "Who is Tyler Durden?",
@@ -12,22 +12,25 @@ export function TypeBox() {
     "How to assemble your own PC?",
   ];
 
-  const handleChange = e => {
-    console.log(e.target.value);
+  const handleChange = (e) => {
+    setPrompt(e.target.value);
   };
-  const onSubmit = e => {
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submitted");
+    onSubmitPrompt(prompt);
+    setPrompt('');
+   
   };
+
   return (
-    <div className=" flex flex-col justify-center  items-center px-4">
-      {/* <h2 className="mb-10 sm:mb-20 text-xl text-center sm:text-5xl dark:text-white text-black">
-        Ask Aceternity UI Anything
-      </h2> */}
+    <div className="flex flex-col justify-center items-center px-4 w-full">
       <PlaceholdersAndVanishInput
         placeholders={placeholders}
         onChange={handleChange}
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
+        disabled={loading}
+        
       />
     </div>
   );

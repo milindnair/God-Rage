@@ -44,9 +44,18 @@ const Upload = ({ setDocuments }) => {
             if (response.data.status === 200) {
                 setFileUrl(response.data.fileUrl); // Assuming the response contains a fileUrl
                 toast.success('File uploaded successfully!');
-                setDocuments(prevDocs => [...prevDocs, response.data.document]); // Add the new document to the existing list
 
-            } else {
+                const documentData = response.data.document.data[0]; // Accessing the first element in the data array
+                const documentMetadata = {
+                    description: documentData.description,
+                    title: response.data.fileName.split('.')[0], // Use file name without extension as title
+                    content: documentData.summary,
+                    fileName: response.data.fileName
+                };
+
+                setDocuments(prevDocs => [...prevDocs, documentMetadata]); // Add the new document to the existing list
+            }
+            else {
                 toast.error('File upload failed.');
             }
         } catch (error) {

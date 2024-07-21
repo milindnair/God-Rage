@@ -35,6 +35,14 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
     );
   };
 
+  const truncateDescription = (description, wordLimit) => {
+    const words = description.split(' ');
+    if (words.length <= wordLimit) {
+        return description;
+    }
+    return words.slice(0, wordLimit).join(' ') + '...';
+};
+
   return (
     <>
       <AnimatePresence>
@@ -75,7 +83,7 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
               ref={ref}
               className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden"
             >
-              <motion.div layoutId={`image-${active.title}-${id}`}>
+              {/* <motion.div layoutId={`image-${active.title}-${id}`}>
                 <Image
                   priority
                   width={200}
@@ -84,7 +92,7 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
                   alt={active.title}
                   className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
                 />
-              </motion.div>
+              </motion.div> */}
 
               <div>
                 <div className="flex justify-between items-start p-4">
@@ -95,21 +103,21 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
                     >
                       {active.title}
                     </motion.h3>
-                    <motion.p
+                    {/* <motion.p
                       layoutId={`description-${active.description}-${id}`}
                       className="text-neutral-600 dark:text-neutral-400"
                     >
-                      {active.description}
-                    </motion.p>
+                      {truncateDescription(active.description, 5)}
+                    </motion.p> */}
                   </div>
 
                   <motion.a
                     layoutId={`button-${active.title}-${id}`}
-                    href={active.ctaLink}
+                    // href={active.ctaLink}
                     target="_blank"
                     className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-white"
                   >
-                    {active.ctaText}
+                    {"Copy"}
                   </motion.a>
                 </div>
                 <div className="pt-4 relative px-4">
@@ -163,19 +171,19 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
                 >
                   {card.title}
                 </motion.h3>
-                <motion.p
+                {/* <motion.p
                   layoutId={`description-${card.description}-${id}`}
                   className="text-neutral-600 dark:text-neutral-400 text-center md:text-left"
                 >
                   {card.description}
-                </motion.p>
+                </motion.p> */}
               </div>
             </div>
             <motion.button
               layoutId={`button-${card.title}-${id}`}
               className="px-4 py-2 text-sm rounded-full font-bold bg-gray-100 hover:bg-green-500 hover:text-white text-black mt-4 md:mt-0"
             >
-              {card.ctaText}
+              {"View"}
             </motion.button>
             
           </motion.div>
