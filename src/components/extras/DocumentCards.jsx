@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { useEffect, useId, useReducer, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import {Checkbox} from "@nextui-org/react";
@@ -11,6 +11,18 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
   const [active, setActive] = useState(null);
   const ref = useRef(null);
   const id = useId();
+  const [childSelectedDocs,setchildSelectedDocs] = useState([]);
+
+
+
+  useEffect(()=>{
+    setchildSelectedDocs(selectedDocuments);
+  },[selectedDocuments])
+
+  useEffect(()=>{
+    console.log("ExpandableCardDemo",childSelectedDocs);
+  },[childSelectedDocs]);
+
 
   useEffect(() => {
     function onKeyDown(event) {
@@ -31,16 +43,27 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
 
   useOutsideClick(ref, () => setActive(null));
 
+
+
+
+
   const handleCheckboxChange = (doc) => {
-    setSelectedDocuments((prev) =>
-      prev.includes(doc) ? prev.filter((d) => d !== doc) : [...prev, doc]
-    );
-  };
+  setSelectedDocuments((prev) => {
+    const isSelected = prev.some(d => d.fileName === doc.fileName);
+    if (isSelected ) {
+      return prev.filter((d) => d.fileName !== doc.fileName);
+    } else {
+      return [...prev, doc];
+    }
+  });
+};
+
+
 
   const truncateDescription = (description, wordLimit) => {
     const words = description.split(' ');
     if (words.length <= wordLimit) {
-        return description;
+      return description;
     }
     return words.slice(0, wordLimit).join(' ') + '...';
   };
@@ -112,7 +135,7 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
                   <div className="mt-2">
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
-                      className="font-bold text-lg font-  text-neutral-700 dark:text-neutral-200"
+                      className="font-bold text-lg font-  text-neutral-700 dark:text-neutral-200 poppins"
                     >
                       {active.title}
                     </motion.h3>
@@ -130,7 +153,7 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
                     
                     // href={active.ctaLink}
                     target="_blank"
-                    className="px-4 py-3 text-sm font-  rounded-full font-bold bg-green-500 text-white cursor-pointer"
+                    className="px-4 py-3 text-sm   rounded-full font-bold bg-green-500 text-white cursor-pointer"
                   >
                     {"Copy"}
                   </motion.a>
@@ -153,18 +176,23 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
       </AnimatePresence>
 
       {/* this is the list */}
+      
       <ul className="max-w-2xl mx-auto w-full gap-4">
         {documents.map((card, index) => (
           <div key={`card-${card.title}-${id}`} className="flex flex-row">
             <Checkbox
-          
-              checked={selectedDocuments.includes(card)}
+              key={card.fileName} // or another unique attribute
+              checked={childSelectedDocs.some(doc => doc.fileName === card.fileName)
+}
+              defaultChecked={false}
               onChange={(e) => {
                 e.stopPropagation();
                 handleCheckboxChange(card);
               }}
               className="ml-1"
             />
+
+
             <motion.div
             layoutId={`card-${card.title}-${id}`}
             key={`card-${card.title}-${id}`}
@@ -180,32 +208,33 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
                   alt={card.title}
                   className="h-40 w-40 md:h-14 md:w-14 rounded-lg object-cover object-top"
                 /> */}
-              {/* </motion.div> */}
-              <div className="">
-                <motion.h3
-                  layoutId={`title-${card.title}-${id}`}
-                  className="text-md text-white font-  dark:text-neutral-200 "
-                >
-                  {card.title}
-                </motion.h3>
-                {/* <motion.p
+                {/* </motion.div> */}
+                <div className="">
+                  <motion.h3
+                    layoutId={`title-${card.title}-${id}`}
+                    className="text-md text-white dark:text-neutral-200 poppins"
+                  >
+                    {card.title}
+                  </motion.h3>
+                  {/* <motion.p
                   layoutId={`description-${card.description}-${id}`}
                   className="text-neutral-600 dark:text-neutral-400 text-center md:text-left"
                 >
                   {card.description}
                 </motion.p> */}
+                </div>
               </div>
-            </div>
-            <motion.button
-              layoutId={`button-${card.title}-${id}`}
-              className="px-4 py-2 text-sm font-  rounded-full font-bold bg-gray-100 hover:bg-blue-500 hover:text-white text-black ml-2 mt-4 md:mt-0"
-            >
-              {"View"}
-            </motion.button>
-            
-          </motion.div>
-          
-        </div>
+              <motion.button
+                layoutId={`button-${card.title}-${id}`}
+                className="px-4 py-2 text-sm rounded-full nunito_sans font-bold bg-gray-100 hover:bg-purple-500 hover:text-white text-black ml-2 mt-4 md:mt-0"
+              >
+                {"View"}
+              </motion.button>
+
+            </motion.div>
+            <ToastContainer containerId="container C" />
+
+          </div>
         ))}
       </ul>
     </>

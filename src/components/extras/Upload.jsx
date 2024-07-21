@@ -56,10 +56,10 @@ const Upload = ({ setDocuments }) => {
                 setDocuments(prevDocs => [...prevDocs, documentMetadata]); // Add the new document to the existing list
             }
             else {
-                toast.error('File upload failed.');
+                // toast.error('File upload failed.');
             }
         } catch (error) {
-            toast.error('Error uploading file.');
+            // toast.error('Error uploading file.');
         } finally {
             setLoading(false);
         }
@@ -88,7 +88,7 @@ const Upload = ({ setDocuments }) => {
                     </a>
                 </div>
             )}
-            <ToastContainer />
+            <ToastContainer containerId="Container B"/>
         </div>
     );
 };

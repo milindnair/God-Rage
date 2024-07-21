@@ -26,6 +26,15 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+.nunito_sans{
+    font-family: var(--font-nunito_sans);
+}
+
+
+.poppins{
+  font-family: var(--font-poppins);
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

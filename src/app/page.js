@@ -27,18 +27,13 @@ import { toast, ToastContainer } from 'react-toastify';
 
 
 export default function Home() {
-const [title,setTitle] = useState("");
-const [loading, SetLoading] = useState(false);
+  const [title, setTitle] = useState("");
+  const [loading, SetLoading] = useState(false);
 
-const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState('');
   const [modelType, setModelType] = useState('Choose a model');
   const [documents, setDocuments] = useState([
-    {
-      description: " Based on the provided context, I can give you a one-line description of what it's about. The content appears to be discussing the impact of changing demographics, specifically the growing middle class and young population, on consumer behavior and trends in the fast-moving consumer goods (FMCG) industry in 2023.",
-      title: "Indian-FMCG-Industry-Presentation[1]",
-      content: " Based on the provided context about changing demographics, I can give you a summary that covers the key points.\n\nThe report highlights how the growing middle class and young population are driving consumption in various industries. To stay ahead of this trend, companies need to adapt to new consumer behaviors and preferences.\n\nIn terms of FMCG trends and innovations in 2023, sustainability, customer experience, digitalization, data analytics, and business development are expected to play a significant role. The report also mentions intelligence, e-commerce, blockchain, and opening up new opportunities as important areas to focus on.\n\nSome specific statistics mentioned in the report include:\n\n* 16% growth in the FMCG industry\n* 65% of consumers prioritizing sustainability when making purchasing decisions\n* 10% increase in e-commerce sales\n* 3% growth in blockchain-based transactions\n\nOverall, the report emphasizes the importance of understanding changing demographics and adapting to new trends and technologies to remain competitive in the market.\n\nPlease note that some sections of the text appear to be incomplete or unclear, which may affect the accuracy of my summary.",
-      fileName: "Indian-FMCG-Industry-Presentation[1].pptx"
-    }
+    
   ]);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
   const [messages, setMessages] = useState([
@@ -46,17 +41,17 @@ const [prompt, setPrompt] = useState('');
   ]);
 
 
-const handleSaveChat = async () => {
+  const handleSaveChat = async () => {
     if (messages.length > 1) {
       try {
-        await uploadDocument(title,messages,selectedDocuments,modelType);
+        await uploadDocument(title, messages, selectedDocuments, modelType);
         toast.success('Chat saved successfully!');
       } catch (error) {
         console.error('Error saving chat:', error);
-        toast.error('Failed to save chat. Please try again.');
+        // toast.error('Failed to save chat. Please try again.');
       }
     } else {
-      toast.info('Please have a conversation first.');
+      // toast.info('Please have a conversation first.');
     }
   };
 
@@ -64,7 +59,7 @@ const handleSaveChat = async () => {
   //   console.log('Documents', selectedDocuments);
   // }, [selectedDocuments])
 
-  
+
   const handlePromptSubmit = async (text) => {
 
     setMessages((prevMessages) => [
@@ -144,20 +139,20 @@ const handleSaveChat = async () => {
         </div>
       )}
       <div className="flex flex-col gap-2 w-full md:w-1/5 p-4 bg-white/10 backdrop-blur-xl shadow-lg ring-1 ring-black/5 overflow-y-auto rounded-2xl">
-        <h1 className="text-3xl font-serif mb-4 mt-2 ml-1 text-white">Simplify.io</h1>
+        <h1 className="text-3xl font-serif mb-4 mt-2 ml-1 text-white nunito_sans">Simplify.io</h1>
         <div className="flex flex-col justify-between h-full">
           <Upload setDocuments={setDocuments} />
           <Divider className="mt-3 bg-gray-600" />
           <ChatHistory chathistory={history} setHistory={setHistory} setMessages={setMessages} setModelType={setModelType} setSelectedDocuments={setSelectedDocuments} />
-          <Dropdown className="bg-[#080621]">
+          <Dropdown className="bg-[#080621] nunito_sans">
             <DropdownTrigger>
-              <Button variant="" className="bg-blue-500 py-4 text-white hover:bg-indigo-500">
+              <Button variant="" className="bg-blue-500 py-4 text-white hover:bg-indigo-500 nunito_sans">
                 {modelType}
               </Button>
             </DropdownTrigger>
             <DropdownMenu
               aria-label="Model Selection"
-              className="bg-[#080621] text-white font- "
+              className="bg-[#080621] text-white nunito_sans w-full "
               css={{
                 backgroundColor: '#130F40',
                 '.nextui-dropdown-item': {
@@ -168,9 +163,9 @@ const handleSaveChat = async () => {
               }}
               onAction={(key) => setModelType(key)}
             >
-              <DropdownItem key="llama-3">llama-3</DropdownItem>
-              <DropdownItem key="gpt-3.5 turbo">gpt-3.5 turbo</DropdownItem>
-              <DropdownItem key="gemini">gemini</DropdownItem>
+              <DropdownItem key="llama-3">Llama-3-8B</DropdownItem>
+              <DropdownItem key="gpt-3.5 turbo">Gpt-3.5 turbo</DropdownItem>
+              <DropdownItem key="gemini">Gemini</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
@@ -199,14 +194,14 @@ const handleSaveChat = async () => {
                 <CardBody className="bg-white/20 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border">
                   <CardItem
                     translateZ="50"
-                    className="flex items-center justify-center text-3xl font-bold text-blue-500 font-  dark:text-white"
+                    className="w-full text-center text-3xl font-semibold text-indigo-400  dark:text-white poppins"
                   >
                     Welcome Back!
                   </CardItem>
                   <CardItem
                     as="p"
                     translateZ="60"
-                    className="text-gray-200 text-md font-  max-w-sm mt-2 dark:text-white"
+                    className="text-gray-200 text-md font-  max-w-sm mt-2 dark:text-white text-center poppins"
                   >
                     Choose a model and the files you want to analyze before proceeding.
                   </CardItem>
@@ -252,17 +247,27 @@ const handleSaveChat = async () => {
       </div>
 
       <div className="flex flex-col w-full md:w-1/5 p-4 bg-white/10 backdrop-blur-xl shadow-lg ring-1 ring-black/5 overflow-y-auto rounded-2xl">
-        <h2 className="text-xl font-  text-blue-500 mt-4">Uploaded Documents</h2>
-        <p className='text-sm font- '>You can select multiple files at once!</p>
+        <h2 className="text-xl font-semibold text-center  text-blue-500 mt-4 nunito_sans">Uploaded Documents</h2>
+        <p className='text-sm poppins text-center mt-1 '>You can select multiple files at once!</p>
         <Divider className="mb-3 mt-3 bg-gray-600" />
         {/* document cards */}
-        <ExpandableCardDemo
-          documents={documents}
-          selectedDocuments={selectedDocuments}
-          setSelectedDocuments={setSelectedDocuments}
-        /> 
+        {
+          documents.length === 0 ? (
+            <Card className="bg-blue-500 p-4 px-4 py-2 mb-1">
+              <h2 className='text-md nunito_sans text-white '>No documents uploaded yet</h2>
+              <h2 className='text-md nunito_sans text-white'>Your uploaded documents will appear here</h2>
+            </Card>
+          ) : (
+            <ExpandableCardDemo
+              documents={documents}
+              selectedDocuments={selectedDocuments}
+              setSelectedDocuments={setSelectedDocuments}
+            />
+          )
+        }
       </div>
-      <ToastContainer />
+
+      <ToastContainer containerId="Container A" />
     </main>
   );
 }
