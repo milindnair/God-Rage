@@ -29,41 +29,48 @@ const Upload = ({ setDocuments }) => {
         }
     };
 
-    const handleFileUpload = async (file) => {
-        if (!file) return; // Early return if no file is selected
+const handleFileUpload = async (file) => {
+    if (!file) return; // Early return if no file is selected
 
-        const formData = new FormData();
-        formData.append('file', file);
+    const formData = new FormData();
+    formData.append('file', file);
 
-        try {
-            const response = await axios.post('http://localhost:5001/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            if (response.data.status === 200) {
-                setFileUrl(response.data.fileUrl); // Assuming the response contains a fileUrl
-                toast.success('File uploaded successfully!');
-
-                const documentData = response.data.document.data[0]; // Accessing the first element in the data array
-                const documentMetadata = {
-                    description: documentData.description,
-                    title: response.data.fileName.split('.')[0], // Use file name without extension as title
-                    content: documentData.summary,
-                    fileName: response.data.fileName
-                };
-
-                setDocuments(prevDocs => [...prevDocs, documentMetadata]); // Add the new document to the existing list
+    try {
+        const response = await axios.post('https://localhost:5001/upload', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
             }
-            else {
-                // toast.error('File upload failed.');
-            }
-        } catch (error) {
-            // toast.error('Error uploading file.');
-        } finally {
-            setLoading(false);
+        });
+
+        if (response.data.status === 200) {
+            setFileUrl(response.data.fileUrl); // Assuming the response contains a fileUrl
+            toast.success('File uploaded successfully!');
+            // Additional logic for handling successful uploads...
+        } else {
+            // toast.error("An error occurred while uploading the file. Please check your connection or refer to the documentation.");
         }
-    };
+    } catch (error) {
+        // Check if the error is related to the network
+        alert("Please setup backend.Follow this documentation  https://drive.google.com/file/d/173h6xvU21zu4pg-20piETAuvZCfsM4kU/view?usp=sharing  ");
+        if (error.response && error.response.status === 503) {
+            // toast.error(
+            //     <div>
+            //         Server unavailable. Please check your connection or <a href="https://drive.google.com/file/d/173h6xvU21zu4pg-20piETAuvZCfsM4kU/view?usp=sharing" target="_blank" rel="noopener noreferrer">refer to the documentation</a> for more details.
+            //     </div>
+            // );
+        } else {
+            // toast.error(
+            //     <div>
+            //         Error uploading file. Please check your connection or <a href="https://drive.google.com/file/d/173h6xvU21zu4pg-20piETAuvZCfsM4kU/view?usp=sharing" target="_blank" rel="noopener noreferrer">refer to the documentation</a> for more details.
+            //     </div>
+            // );
+        }
+    } finally {
+        setLoading(false);
+    }
+};
+
+
 
     return (
         <div>
