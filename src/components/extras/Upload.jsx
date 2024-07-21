@@ -99,8 +99,8 @@ export function TailwindcssButtons({ onClick }) {
     return (
         <div className="w-full">
             <button className="relative p-[3px] w-full" onClick={onClick}>
-                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
-                <div className="px-8 py-2 bg-black rounded-[6px] relative group transition duration-200 text-white hover:bg-transparent w-full">
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg" />
+                <div className="px-8 py-2 bg-[#080621] rounded-[6px] relative group transition duration-200 font-  text-white hover:bg-transparent w-full">
                     Upload File
                 </div>
             </button>

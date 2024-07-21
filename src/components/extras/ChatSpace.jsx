@@ -17,7 +17,7 @@ const ChatSpace = ({ messages }) => {
     <div className="relative w-full">
       {/* Save Chat button */}
       
-      <div ref={chatContainerRef} className="flex-1 flex flex-col m-3 p-4 h-full min-h-[80vh] max-h-[80vh] overflow-y-scroll overflow-x-hidden border border-solid-1px border-[#3a3434] rounded-lg w-[95%] pt-10 no-scrollbar">
+      <div ref={chatContainerRef} className="flex-1 flex flex-col m-3 p-4 h-full min-h-[80vh] max-h-[80vh] overflow-y-scroll overflow-x-hidden rounded-lg w-[95%] pt-10 no-scrollbar">
         {messages.map((message, index) => (
           <ChatMessage key={index} message={message} />
         ))}

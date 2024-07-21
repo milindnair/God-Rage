@@ -4,6 +4,8 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import {Checkbox} from "@nextui-org/react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDocuments }) {
   const [active, setActive] = useState(null);
@@ -45,8 +47,9 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text).then(() => {
-      alert("Text copied to clipboard!");
-    }).catch(err => {
+      toast.success('Text Copied!');
+    })
+    .catch(err => {
       console.error('Failed to copy: ', err);
     });
   };
@@ -109,7 +112,7 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
                   <div className="mt-2">
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
-                      className="font-bold text-lg text-neutral-700 dark:text-neutral-200"
+                      className="font-bold text-lg font-  text-neutral-700 dark:text-neutral-200"
                     >
                       {active.title}
                     </motion.h3>
@@ -124,9 +127,10 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
                   <motion.a
                     layoutId={`button-${active.title}-${id}`}
                     onClick={() => handleCopy(active.content)}
+                    
                     // href={active.ctaLink}
                     target="_blank"
-                    className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-white cursor-pointer"
+                    className="px-4 py-3 text-sm font-  rounded-full font-bold bg-green-500 text-white cursor-pointer"
                   >
                     {"Copy"}
                   </motion.a>
@@ -137,7 +141,7 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-neutral-600 text-xs md:text-sm lg:text-base md:h-fit pb-30 flex flex-col items-start gap-4 overflow-scroll dark:text-neutral-400  [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]" //[mask:linear-gradient(to_bottom,white,white,transparent)]
+                    className="text-neutral-600 text-xs font-  md:text-sm lg:text-base md:h-fit pb-30 flex flex-col items-start gap-4 overflow-scroll dark:text-neutral-400  [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]" //[mask:linear-gradient(to_bottom,white,white,transparent)]
                   >
                     {typeof active.content === "function" ? active.content() : active.content}
                   </motion.div>
@@ -165,7 +169,7 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
             layoutId={`card-${card.title}-${id}`}
             key={`card-${card.title}-${id}`}
             onClick={() => setActive(card)}
-            className="py-3 pl-3 pr-1 flex flex-col md:flex-row w-full justify-between items-center hover:text-black hover:bg-white/10 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
+            className="py-3 pl-3 pr-1 flex flex-col md:flex-row w-full font-  justify-between items-center hover:text-black hover:bg-white/10 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
           >
             <div className="flex gap- flex-col md:flex-row ">
               {/* <motion.div layoutId={`image-${card.title}-${id}`}> */}
@@ -180,7 +184,7 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
               <div className="">
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
-                  className="text-md text-white dark:text-neutral-200 "
+                  className="text-md text-white font-  dark:text-neutral-200 "
                 >
                   {card.title}
                 </motion.h3>
@@ -194,7 +198,7 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
             </div>
             <motion.button
               layoutId={`button-${card.title}-${id}`}
-              className="px-4 py-2 text-sm rounded-full font-bold bg-gray-100 hover:bg-purple-500 hover:text-white text-black ml-2 mt-4 md:mt-0"
+              className="px-4 py-2 text-sm font-  rounded-full font-bold bg-gray-100 hover:bg-blue-500 hover:text-white text-black ml-2 mt-4 md:mt-0"
             >
               {"View"}
             </motion.button>

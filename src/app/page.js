@@ -19,10 +19,12 @@ import ChatSpace from '@/components/extras/ChatSpace';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card';
+import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
 import ChatHistory from '@/components/extras/ChatHistory';
 import axios from 'axios';
 import { getAllDocuments, uploadDocument } from '@/firebase/functions';
 import { toast, ToastContainer } from 'react-toastify';
+
 
 export default function Home() {
 const [title,setTitle] = useState("");
@@ -32,87 +34,10 @@ const [prompt, setPrompt] = useState('');
   const [modelType, setModelType] = useState('Choose a model');
   const [documents, setDocuments] = useState([
     {
-      description: 'Analysis on pwc',
-      title: 'pwc-ai-analysis',
-      content: () => (
-        <p>
-          Lana Del Rey, an iconic American singer-songwriter, is celebrated for
-          her melancholic and cinematic music style. Born Elizabeth Woolridge
-          Grant in New York City, she has captivated audiences worldwide with
-          her haunting voice and introspective lyrics. <br /> <br /> Her songs
-          often explore themes of tragic romance, glamour, and melancholia,
-          drawing inspiration from both contemporary and vintage pop culture.
-          With a career that has seen numerous critically acclaimed albums, Lana
-          Del Rey has established herself as a unique and influential figure in
-          the music industry, earning a dedicated fan base and numerous
-          accolades.
-        </p>
-      ),
-    },
-    {
-      description: 'Babbu Maan',
-      title: 'Mitran Di Chhatri',
-      src: 'https://assets.aceternity.com/demos/babbu-maan.jpeg',
-      ctaText: 'View',
-      ctaLink: 'https://ui.aceternity.com/templates',
-      content: () => (
-        <p>
-          Babu Maan, a legendary Punjabi singer, is renowned for his soulful
-          voice and profound lyrics that resonate deeply with his audience. Born
-          in the village of Khant Maanpur in Punjab, India, he has become a
-          cultural icon in the Punjabi music industry. <br /> <br /> His songs
-          often reflect the struggles and triumphs of everyday life, capturing
-          the essence of Punjabi culture and traditions. With a career spanning
-          over two decades, Babu Maan has released numerous hit albums and
-          singles that have garnered him a massive fan following both in India
-          and abroad.
-        </p>
-      ),
-    },
-    {
-      description: 'Metallica',
-      title: 'For Whom The Bell Tolls',
-      src: 'https://assets.aceternity.com/demos/metallica.jpeg',
-      ctaText: 'View',
-      ctaLink: 'https://ui.aceternity.com/templates',
-      content: () => (
-        <p>
-          Metallica, an iconic American heavy metal band, is renowned for their
-          powerful sound and intense performances that resonate deeply with
-          their audience. Formed in Los Angeles, California, they have become a
-          cultural icon in the heavy metal music industry. <br /> <br /> Their
-          songs often reflect themes of aggression, social issues, and personal
-          struggles, capturing the essence of the heavy metal genre. With a
-          career spanning over four decades, Metallica has released numerous hit
-          albums and singles that have garnered them a massive fan following
-          both in the United States and abroad.
-        </p>
-      ),
-    },
-    {
-      description: 'Led Zeppelin',
-      title: 'Stairway To Heaven',
-      src: 'https://assets.aceternity.com/demos/led-zeppelin.jpeg',
-      ctaText: 'View',
-      ctaLink: 'https://ui.aceternity.com/templates',
-      content: () => (
-        <p>
-          Led Zeppelin, a legendary British rock band, is renowned for their
-          innovative sound and profound impact on the music industry. Formed in
-          London in 1968, they have become a cultural icon in the rock music
-          world. <br /> <br /> Their songs often reflect a blend of blues, hard
-          rock, and folk music, capturing the essence of the 1970s rock era.
-          With a career spanning over a decade, Led Zeppelin has released
-          numerous hit albums and singles that have garnered them a massive fan
-          following both in the United Kingdom and abroad.
-        </p>
-      ),
-    },
-        {
-        description: " Based on the provided context, I can give you a one-line description of what it's about. The content appears to be discussing the impact of changing demographics, specifically the growing middle class and young population, on consumer behavior and trends in the fast-moving consumer goods (FMCG) industry in 2023.",
-        title: "Indian-FMCG-Industry-Presentation[1]",
-        content: " Based on the provided context about changing demographics, I can give you a summary that covers the key points.\n\nThe report highlights how the growing middle class and young population are driving consumption in various industries. To stay ahead of this trend, companies need to adapt to new consumer behaviors and preferences.\n\nIn terms of FMCG trends and innovations in 2023, sustainability, customer experience, digitalization, data analytics, and business development are expected to play a significant role. The report also mentions intelligence, e-commerce, blockchain, and opening up new opportunities as important areas to focus on.\n\nSome specific statistics mentioned in the report include:\n\n* 16% growth in the FMCG industry\n* 65% of consumers prioritizing sustainability when making purchasing decisions\n* 10% increase in e-commerce sales\n* 3% growth in blockchain-based transactions\n\nOverall, the report emphasizes the importance of understanding changing demographics and adapting to new trends and technologies to remain competitive in the market.\n\nPlease note that some sections of the text appear to be incomplete or unclear, which may affect the accuracy of my summary.",
-        fileName: "Indian-FMCG-Industry-Presentation[1].pptx"
+      description: " Based on the provided context, I can give you a one-line description of what it's about. The content appears to be discussing the impact of changing demographics, specifically the growing middle class and young population, on consumer behavior and trends in the fast-moving consumer goods (FMCG) industry in 2023.",
+      title: "Indian-FMCG-Industry-Presentation[1]",
+      content: " Based on the provided context about changing demographics, I can give you a summary that covers the key points.\n\nThe report highlights how the growing middle class and young population are driving consumption in various industries. To stay ahead of this trend, companies need to adapt to new consumer behaviors and preferences.\n\nIn terms of FMCG trends and innovations in 2023, sustainability, customer experience, digitalization, data analytics, and business development are expected to play a significant role. The report also mentions intelligence, e-commerce, blockchain, and opening up new opportunities as important areas to focus on.\n\nSome specific statistics mentioned in the report include:\n\n* 16% growth in the FMCG industry\n* 65% of consumers prioritizing sustainability when making purchasing decisions\n* 10% increase in e-commerce sales\n* 3% growth in blockchain-based transactions\n\nOverall, the report emphasizes the importance of understanding changing demographics and adapting to new trends and technologies to remain competitive in the market.\n\nPlease note that some sections of the text appear to be incomplete or unclear, which may affect the accuracy of my summary.",
+      fileName: "Indian-FMCG-Industry-Presentation[1].pptx"
     }
   ]);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
@@ -134,13 +59,6 @@ const handleSaveChat = async () => {
       toast.info('Please have a conversation first.');
     }
   };
-
-
-
-
-
-  
-
 
   // useEffect(() => {
   //   console.log('Documents', selectedDocuments);
@@ -219,31 +137,32 @@ const handleSaveChat = async () => {
   }, []);
 
   return (
-    <main className="flex flex-col p-4 md:flex-row h-screen gap-3">
+    <main className="flex flex-col p-4 md:flex-row h-screen gap-3 bg-gradient-to-br from-[#000000] to-[#130F40]">
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <Spinner size="xl" />
         </div>
       )}
-      <div className="flex flex-col gap-2 w-full md:w-1/5 p-4 bg-[#0c1b32] overflow-y-auto rounded-2xl">
-        <h1 className="text-xl font-bold mb-4">Simplify.io</h1>
+      <div className="flex flex-col gap-2 w-full md:w-1/5 p-4 bg-white/10 backdrop-blur-xl shadow-lg ring-1 ring-black/5 overflow-y-auto rounded-2xl">
+        <h1 className="text-3xl font-serif mb-4 mt-2 ml-1 text-white">Simplify.io</h1>
         <div className="flex flex-col justify-between h-full">
           <Upload setDocuments={setDocuments} />
+          <Divider className="mt-3 bg-gray-600" />
           <ChatHistory chathistory={history} setHistory={setHistory} setMessages={setMessages} setModelType={setModelType} setSelectedDocuments={setSelectedDocuments} />
-          <Dropdown className="bg-gray-800">
+          <Dropdown className="bg-[#080621]">
             <DropdownTrigger>
-              <Button variant="bordered" className="bg-gray-800 text-white border-gray-600">
+              <Button variant="" className="bg-blue-500 py-4 text-white hover:bg-indigo-500">
                 {modelType}
               </Button>
             </DropdownTrigger>
             <DropdownMenu
               aria-label="Model Selection"
-              className="bg-gray-800 text-white"
+              className="bg-[#080621] text-white font- "
               css={{
-                backgroundColor: '#1f2937',
+                backgroundColor: '#130F40',
                 '.nextui-dropdown-item': {
                   '&:hover': {
-                    backgroundColor: '#111827',
+                    backgroundColor: '#130F40',
                   },
                 },
               }}
@@ -257,37 +176,37 @@ const handleSaveChat = async () => {
         </div>
       </div>
 
-      <div className="flex-1 p-4 bg-[#0c1b32] flex flex-col relative overflow-y-auto rounded-2xl">
-        <div className="absolute inset-0 flex flex-col justify-end">
+      <div className="flex-1 p-4 bg-white/5 backdrop-blur-xl shadow-2xl ring-1 ring-black/10 flex flex-col relative overflow-y-auto rounded-2xl">
+        <div className="absolute inset-0 flex flex-col justify-end font- ">
           {modelType != 'Choose a model' && selectedDocuments.length > 0 ? (
             <div className="flex flex-col justify-center items-center mb-5 ">
               <ChatSpace messages={messages} />
               <div className="w-[90%] align-bottom flex justify-center items-center">
                 <TypeBox prompt={prompt} setPrompt={setPrompt} onSubmitPrompt={handlePromptSubmit} loading={loading} setTitle={setTitle} />
-                <Button
-                  auto
-                  color="primary"
-                  className=""
+                <HoverBorderGradient
+                  containerClassName=""
+                  as="button"
+                  className="bg-[#080621] text-white w-50 text-sm font- "
                   onClick={handleSaveChat}
                 >
-                  Save Chat
-                </Button>
+                  SaveChat
+                </HoverBorderGradient>
               </div>
             </div>
           ) : (
-            <div className="flex flex-col justify-center items-center mb-12">
+            <div className="flex justify-center items-center mb-12 font- ">
               <CardContainer className="inter-var">
                 <CardBody className="bg-white/20 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border">
                   <CardItem
                     translateZ="50"
-                    className="text-3xl align-center font-bold text-white dark:text-white"
+                    className="flex items-center justify-center text-3xl font-bold text-blue-500 font-  dark:text-white"
                   >
                     Welcome Back!
                   </CardItem>
                   <CardItem
                     as="p"
                     translateZ="60"
-                    className="text-gray-200 text-md max-w-sm mt-2 dark:text-white"
+                    className="text-gray-200 text-md font-  max-w-sm mt-2 dark:text-white"
                   >
                     Choose a model and the files you want to analyze before proceeding.
                   </CardItem>
@@ -300,11 +219,11 @@ const handleSaveChat = async () => {
                       alt="thumbnail"
                     />
                   </CardItem>
-                  <div className="flex justify-between items-center mt-0">
+                  <div className="flex justify-between items-center mt-4">
                     {/* <CardItem
                       as="p"
                       translateZ="60"
-                      className="text-neutral-500 text-sm max-w-sm  dark:text-neutral-300"
+                      className="text-white text-sm max-w-sm mt-5 dark:text-neutral-300"
                     >
                       Choose a model and the files you want to analyze before proceeding.
                     </CardItem> */}
@@ -332,9 +251,9 @@ const handleSaveChat = async () => {
         </div>
       </div>
 
-      <div className="flex flex-col w-full md:w-1/5 p-4 bg-[#0c1b32] overflow-y-auto rounded-2xl">
-        <h2 className="text-xl text-purple-500 mt-5">Uploaded Documents</h2>
-        <p className='text-sm'>You can select multiple files at once!</p>
+      <div className="flex flex-col w-full md:w-1/5 p-4 bg-white/10 backdrop-blur-xl shadow-lg ring-1 ring-black/5 overflow-y-auto rounded-2xl">
+        <h2 className="text-xl font-  text-blue-500 mt-4">Uploaded Documents</h2>
+        <p className='text-sm font- '>You can select multiple files at once!</p>
         <Divider className="mb-3 mt-3 bg-gray-600" />
         {/* document cards */}
         <ExpandableCardDemo
