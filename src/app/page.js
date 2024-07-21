@@ -228,33 +228,40 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <div className="flex flex-col justify-center items-center mb-5">
+            <div className="flex flex-col justify-center items-center mb-12">
               <CardContainer className="inter-var">
-                <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border">
+                <CardBody className="bg-white/20 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border">
                   <CardItem
                     translateZ="50"
-                    className="text-xl font-bold text-neutral-600 dark:text-white"
+                    className="text-3xl align-center font-bold text-white dark:text-white"
                   >
                     Welcome Back!
                   </CardItem>
                   <CardItem
                     as="p"
                     translateZ="60"
-                    className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
+                    className="text-gray-200 text-md max-w-sm mt-2 dark:text-white"
                   >
-                    Make sure to choose a model and the files you want to analyze before proceeding.
+                    Choose a model and the files you want to analyze before proceeding.
                   </CardItem>
                   <CardItem translateZ="100" className="w-full mt-4">
                     <Image
-                      src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                      src="https://images.unsplash.com/photo-1597733336794-12d05021d510?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                       height="1000"
                       width="1000"
                       className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
                       alt="thumbnail"
                     />
                   </CardItem>
-                  <div className="flex justify-between items-center mt-20">
-                    <CardItem
+                  <div className="flex justify-between items-center mt-0">
+                    {/* <CardItem
+                      as="p"
+                      translateZ="60"
+                      className="text-neutral-500 text-sm max-w-sm  dark:text-neutral-300"
+                    >
+                      Choose a model and the files you want to analyze before proceeding.
+                    </CardItem> */}
+                    {/* <CardItem
                       translateZ={20}
                       as={Link}
                       href="https://twitter.com/mannupaaji"
@@ -269,7 +276,7 @@ export default function Home() {
                       className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
                     >
                       Sign up
-                    </CardItem>
+                    </CardItem> */}
                   </div>
                 </CardBody>
               </CardContainer>
@@ -280,12 +287,14 @@ export default function Home() {
 
       <div className="flex flex-col w-full md:w-1/5 p-4 bg-[#0c1b32] overflow-y-auto rounded-2xl">
         <h2 className="text-xl text-purple-500 mt-5">Uploaded Documents</h2>
-        <Divider className="mb-3 mt-2 bg-gray-600" />
+        <p className='text-sm'>You can select multiple files at once!</p>
+        <Divider className="mb-3 mt-3 bg-gray-600" />
+        {/* document cards */}
         <ExpandableCardDemo
           documents={documents}
           selectedDocuments={selectedDocuments}
           setSelectedDocuments={setSelectedDocuments}
-        />
+        /> 
       </div>
     </main>
   );

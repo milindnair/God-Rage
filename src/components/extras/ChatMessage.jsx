@@ -3,7 +3,7 @@ import { TextGenerateEffect } from '../ui/text-generate-effect';
 
 const ChatMessage = ({ message }) => {
   return (
-    <div className={`p-3 my-2 rounded-lg max-w-[80%] break-words ${message.sender === 'user' ? 'bg-[#112546] text-white self-end' : 'bg-[#6993ff] text-black self-start'}`}>
+    <div className={`p-3 my-2 max-w-[80%] break-words ${message.sender === 'user' ? 'bg-[#112546] rounded-l-lg rounded-br-lg text-md text-white self-end' : 'bg-[#6993ff] rounded-r-lg rounded-bl-lg text-md text-black self-start'}`}>
       {message.sender === 'user' ? message.text : <TextGenerateEffect words={message.text}  />
       }
     </div>
