@@ -3,25 +3,27 @@ import Image from "next/image";
 import React, { useEffect, useId, useReducer, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
-import {Checkbox} from "@nextui-org/react";
-import { ToastContainer, toast } from 'react-toastify';
+import { Checkbox } from "@nextui-org/react";
 import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDocuments }) {
   const [active, setActive] = useState(null);
   const ref = useRef(null);
   const id = useId();
-  const [childSelectedDocs,setchildSelectedDocs] = useState([]);
+  const [childSelectedDocs, setchildSelectedDocs] = useState([]);
+
+  console.log(`ExpandableCardDemo1: ${documents}`);
 
 
-
-  useEffect(()=>{
+  useEffect(() => {
     setchildSelectedDocs(selectedDocuments);
-  },[selectedDocuments])
+  }, [selectedDocuments])
 
-  useEffect(()=>{
-    console.log("ExpandableCardDemo",childSelectedDocs);
-  },[childSelectedDocs]);
+  useEffect(() => {
+    console.log("ExpandableCardDemo", childSelectedDocs);
+  }, [childSelectedDocs]);
 
 
   useEffect(() => {
@@ -47,16 +49,19 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
 
 
 
+
+
+
   const handleCheckboxChange = (doc) => {
-  setSelectedDocuments((prev) => {
-    const isSelected = prev.some(d => d.fileName === doc.fileName);
-    if (isSelected ) {
-      return prev.filter((d) => d.fileName !== doc.fileName);
-    } else {
-      return [...prev, doc];
-    }
-  });
-};
+    setSelectedDocuments((prev) => {
+      const isSelected = prev.some(d => d.fileName === doc.fileName);
+      if (isSelected) {
+        return prev.filter((d) => d.fileName !== doc.fileName);
+      } else {
+        return [...prev, doc];
+      }
+    });
+  };
 
 
 
@@ -70,11 +75,12 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text).then(() => {
-      toast.success('Text Copied!');
+      console.log('hello world');
+      toast('Copied!',{containerId: 'container C'})
     })
-    .catch(err => {
-      console.error('Failed to copy: ', err);
-    });
+      .catch(err => {
+        console.error('Failed to copy: ', err);
+      });
   };
 
   return (
@@ -91,7 +97,7 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
       </AnimatePresence>
       <AnimatePresence>
         {active && typeof active === "object" ? (
-          <div className="fixed inset-0 grid place-items-center z-[100]">
+          <div className="no-scrollbar fixed inset-0 grid place-items-center z-[100]">
             <motion.button
               key={`button-${active.title}-${id}`}
               layout
@@ -117,7 +123,7 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              className="w-full p-2 max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden"
+              className="no-scrollbar w-full p-2 max-w-[500px]  md:h-fit  flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden"
             >
               {/* <motion.div layoutId={`image-${active.title}-${id}`}>
                 <Image
@@ -130,7 +136,7 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
                 />
               </motion.div> */}
 
-              <div>
+              <div className="pt-5">
                 <div className="flex justify-between items-start p-4">
                   <div className="mt-2">
                     <motion.h3
@@ -150,24 +156,24 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
                   <motion.a
                     layoutId={`button-${active.title}-${id}`}
                     onClick={() => handleCopy(active.content)}
-                    
+
                     // href={active.ctaLink}
                     target="_blank"
-                    className="px-4 py-3 text-sm   rounded-full font-bold bg-green-500 text-white cursor-pointer"
+                    className="px-4 py-3 text-sm   rounded-full font-bold bg-green-500 text-white cursor-pointer "
                   >
                     {"Copy"}
                   </motion.a>
                 </div>
                 <div className="pt- relative pb-10 px-4">
                   <motion.div
-                    layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="text-neutral-600 text-xs font-  md:text-sm lg:text-base md:h-fit pb-30 flex flex-col items-start gap-4 overflow-scroll dark:text-neutral-400  [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]" //[mask:linear-gradient(to_bottom,white,white,transparent)]
+                    className="no-scrollbar text-neutral-600 text-xs font- md:text-sm lg:text-base md:h-fit pb-30 flex flex-col items-start gap-4 dark:text-neutral-400"
+                    style={{ maxHeight: '75vh', overflowY: 'auto' }} // Added styles here
                   >
                     {typeof active.content === "function" ? active.content() : active.content}
                   </motion.div>
+
+
+
                 </div>
               </div>
             </motion.div>
@@ -176,14 +182,14 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
       </AnimatePresence>
 
       {/* this is the list */}
-      
+
       <ul className="max-w-2xl mx-auto w-full gap-4">
         {documents.map((card, index) => (
           <div key={`card-${card.title}-${id}`} className="flex flex-row">
             <Checkbox
               key={card.fileName} // or another unique attribute
               checked={childSelectedDocs.some(doc => doc.fileName === card.fileName)
-}
+              }
               defaultChecked={false}
               onChange={(e) => {
                 e.stopPropagation();
@@ -194,13 +200,13 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
 
 
             <motion.div
-            layoutId={`card-${card.title}-${id}`}
-            key={`card-${card.title}-${id}`}
-            onClick={() => setActive(card)}
-            className="py-3 pl-3 pr-1 flex flex-col md:flex-row w-full font-  justify-between items-center hover:text-black hover:bg-white/10 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
-          >
-            <div className="flex gap- flex-col md:flex-row ">
-              {/* <motion.div layoutId={`image-${card.title}-${id}`}> */}
+              layoutId={`card-${card.title}-${id}`}
+              key={`card-${card.title}-${id}`}
+              onClick={() => setActive(card)}
+              className="py-3 pl-3 pr-1 flex flex-col md:flex-row w-full font-  justify-between items-center hover:text-black hover:bg-white/10 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
+            >
+              <div className="flex gap- flex-col md:flex-row ">
+                {/* <motion.div layoutId={`image-${card.title}-${id}`}> */}
                 {/* <Image
                   width={100}
                   height={100}
@@ -232,7 +238,7 @@ export function ExpandableCardDemo({ documents, selectedDocuments, setSelectedDo
               </motion.button>
 
             </motion.div>
-            <ToastContainer containerId="container C" />
+            
 
           </div>
         ))}

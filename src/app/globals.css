@@ -30,6 +30,14 @@ body {
     font-family: var(--font-nunito_sans);
 }
 
+.scrollable-content {
+  overflow-y: scroll;
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For IE and Edge */
+  -webkit-overflow-scrolling: touch; /* For iOS */
+}
+
+
 
 .poppins{
   font-family: var(--font-poppins);

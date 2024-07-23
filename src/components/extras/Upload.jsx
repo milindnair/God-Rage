@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Spinner } from "@nextui-org/react";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Upload = ({ setDocuments }) => {
+const Upload = ({ setDocuments,documents }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [fileUrl, setFileUrl] = useState(null);
@@ -21,6 +21,10 @@ const Upload = ({ setDocuments }) => {
         await handleFileUpload(file);
     };
 
+      useEffect(()=>{
+    localStorage.setItem('documents', JSON.stringify(documents));
+  },[documents]);
+
     const handleButtonClick = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click(); // Trigger file selection dialog
@@ -29,46 +33,59 @@ const Upload = ({ setDocuments }) => {
         }
     };
 
-const handleFileUpload = async (file) => {
-    if (!file) return; // Early return if no file is selected
+    const handleFileUpload = async (file) => {
+        if (!file) return; // Early return if no file is selected
 
-    const formData = new FormData();
-    formData.append('file', file);
+        const formData = new FormData();
+        formData.append('file', file);
 
-    try {
-        const response = await axios.post('https://localhost:5001/upload', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
+        try {
+
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            if (response.data.status === 200) {
+                setFileUrl(response.data.fileUrl); // Assuming the response contains a fileUrl
+                console.log(response.data)
+                const documentData = response.data.document.data[0]; // Accessing the first element in the data array
+                console.log(documentData.summary)
+                const documentMetadata = {
+                    // description: documentData.description,
+                    title: response.data.fileName.split('.')[0], // Use file name without extension as title
+                    content: documentData.summary,
+                    fileName: response.data.fileName
+                };
+
+                setDocuments(prevDocs => [...prevDocs, documentMetadata]); // Add the new document to the existing list
+                toast.success('File uploaded successfully!',{containerId: 'container B'});
+                // Additional logic for handling successful uploads...
+            } else {
+                toast.error("An error occurred while uploading the file. Please check your connection or refer to the documentation.",{containerId: 'container B'});
             }
-        });
-
-        if (response.data.status === 200) {
-            setFileUrl(response.data.fileUrl); // Assuming the response contains a fileUrl
-            toast.success('File uploaded successfully!');
-            // Additional logic for handling successful uploads...
-        } else {
-            // toast.error("An error occurred while uploading the file. Please check your connection or refer to the documentation.");
+        } catch (error) {
+            // Check if the error is related to the network
+            console.log(error);
+            // alert("Please setup backend.Follow this documentation  https://drive.google.com/file/d/173h6xvU21zu4pg-20piETAuvZCfsM4kU/view?usp=sharing  ");
+            if (error.response && error.response.status === 503) {
+                toast.error(
+                    <div>
+                        Server unavailable. Please check your connection or <a href="https://drive.google.com/file/d/173h6xvU21zu4pg-20piETAuvZCfsM4kU/view?usp=sharing" target="_blank" rel="noopener noreferrer">refer to the documentation</a> for more details.
+                    </div>,{containerId: 'container B'}
+                );
+            } else {
+                toast.error(
+                    <div>
+                        Error uploading file. Please check your connection or <a href="https://drive.google.com/file/d/173h6xvU21zu4pg-20piETAuvZCfsM4kU/view?usp=sharing" target="_blank" rel="noopener noreferrer">refer to the documentation</a> for more details.
+                    </div>,{containerId: 'container B'}
+                );
+            }
+        } finally {
+            setLoading(false);
         }
-    } catch (error) {
-        // Check if the error is related to the network
-        alert("Please setup backend.Follow this documentation  https://drive.google.com/file/d/173h6xvU21zu4pg-20piETAuvZCfsM4kU/view?usp=sharing  ");
-        if (error.response && error.response.status === 503) {
-            // toast.error(
-            //     <div>
-            //         Server unavailable. Please check your connection or <a href="https://drive.google.com/file/d/173h6xvU21zu4pg-20piETAuvZCfsM4kU/view?usp=sharing" target="_blank" rel="noopener noreferrer">refer to the documentation</a> for more details.
-            //     </div>
-            // );
-        } else {
-            // toast.error(
-            //     <div>
-            //         Error uploading file. Please check your connection or <a href="https://drive.google.com/file/d/173h6xvU21zu4pg-20piETAuvZCfsM4kU/view?usp=sharing" target="_blank" rel="noopener noreferrer">refer to the documentation</a> for more details.
-            //     </div>
-            // );
-        }
-    } finally {
-        setLoading(false);
-    }
-};
+    };
 
 
 
@@ -95,7 +112,7 @@ const handleFileUpload = async (file) => {
                     </a>
                 </div>
             )}
-            <ToastContainer containerId="Container B"/>
+            <ToastContainer containerId="Container B" />
         </div>
     );
 };
